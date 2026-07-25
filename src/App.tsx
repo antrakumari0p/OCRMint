@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/layout";
 import { Home } from "@/pages/Home";
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <Header />
       <Home />
+      <Analytics />
     </>
   );
 }
