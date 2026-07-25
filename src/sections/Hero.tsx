@@ -1,4 +1,5 @@
 import { Container, Section } from "@/components/ui";
+import { DecorativeBackground } from "@/components/background/DecorativeBackground";
 import { UploadCard } from "./UploadCard";
 
 const TRUST_INDICATORS = ["Free", "Private", "No Signup", "Fast OCR"] as const;
@@ -13,9 +14,11 @@ export function Hero() {
     <Section
       as="section"
       aria-label="Extract text from an image"
-      className="flex min-h-[calc(100svh-4rem)] items-center py-10 sm:py-12"
+      className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden py-10 sm:py-12"
     >
-      <Container narrow className="flex flex-col items-center gap-8 text-center">
+      <DecorativeBackground theme="ocr" />
+
+      <Container narrow className="relative z-10 flex flex-col items-center gap-8 text-center">
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             Extract Text From Images Instantly
