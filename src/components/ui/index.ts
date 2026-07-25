@@ -11,4 +11,4 @@ export { Section } from "./Section";
 export type { SectionProps } from "./Section";
 
 export { Logo } from "./Logo";
-export type { LogoProps } from "./Logo";
+export type { LogoProps, LogoSize } from "./Logo";

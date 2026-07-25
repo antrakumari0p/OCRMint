@@ -59,7 +59,8 @@ src/
   components/
     ui/              Generic, content-agnostic UI primitives
                       (Button, Card, Container, Section, Logo)
-    layout/          Structural layout components (header/footer shells, etc.)
+    layout/          Structural layout components (Header, Navigation, MobileMenu,
+                      ThemeToggle, MintLabsBadge)
   sections/          Page-specific content sections (Hero, UploadArea, ...)
   hooks/             Reusable React hooks
   lib/               Shared utilities and non-visual logic (tokens, cn, etc.)
@@ -100,4 +101,15 @@ Established the engineering foundation for OCRMint:
 
 **CTO review outcome:** Approved with revisions. Follow-up items (README, changelog, `.gitignore` hardening, ESLint configuration) were addressed as part of the revision pass — see `CHANGELOG.md`.
 
-Future sprints will add: navigation, hero section, upload area, OCR functionality, authentication, and backend integration.
+### Sprint 2 — Navigation System
+Built the complete site navigation, reused as-is by every future page:
+- Sticky `Header` with a scroll-triggered transparent → solid background transition
+- `MintLabsBadge` — a small, clickable parent-brand mark (Mint Labs stays subtle; OCRMint remains the hero)
+- Desktop `Navigation` (How It Works, Privacy, About + theme toggle) and a mobile `MobileMenu` with a slide-down panel, sharing one `NAV_LINKS` source of truth
+- `ThemeToggle` — UI only, no dark mode logic implemented yet
+- `useScrolled` hook for header scroll state
+- No hero, upload area, footer, or OCR functionality — navigation only, per sprint scope
+
+See `CHANGELOG.md` for the full itemized entry.
+
+Future sprints will add: hero section, upload area, OCR functionality, authentication, and backend integration.
