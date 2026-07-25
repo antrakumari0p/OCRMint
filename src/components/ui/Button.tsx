@@ -11,8 +11,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 rounded-md font-body font-medium " +
-  "transition duration-200 ease-in-out disabled:cursor-not-allowed disabled:opacity-50 " +
+  "inline-flex items-center justify-center gap-2 rounded-lg font-body font-medium shadow-sm " +
+  "transition duration-200 ease-in-out hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
 
 const variantStyles: Record<ButtonVariant, string> = {

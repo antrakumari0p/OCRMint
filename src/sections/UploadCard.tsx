@@ -1,74 +1,89 @@
-import { useId, useRef, useState } from "react";
-import type { ChangeEvent, DragEvent } from "react";
-import { Button, Card } from "@/components/ui";
+import { useId, useState } from "react";
+import type { DragEvent, SVGProps } from "react";
 import { cn } from "@/lib/cn";
+import { useFileInput } from "@/hooks/useFileInput";
 
 /**
  * Single source of truth for accepted formats and size limit — used for
- * both the file input's `accept` attribute and the label copy below, and
- * ready for Sprint 4 to reuse for real validation.
+ * both file inputs' `accept` attribute (this one and the Upload Image CTA
+ * in `Hero`) and the label copy below.
  */
 export const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/webp"] as const;
-export const ACCEPTED_FILE_LABEL = "PNG • JPG • JPEG • WEBP";
-export const MAX_FILE_SIZE_MB = 20;
+export const ACCEPTED_FILE_LABEL = "PNG, JPG, JPEG, WEBP";
+export const MAX_FILE_SIZE_MB = 10;
 
 export interface UploadCardProps {
   /**
-   * Called with the selected file, whether chosen via the file picker or
-   * dropped onto the card. Not wired to anything yet — Sprint 4 can pass
+   * Called with the selected file, whether chosen by clicking the card or
+   * dropped onto it. Not wired to anything yet — a future sprint can pass
    * a handler here (e.g. to kick off OCR) without touching this component.
    */
   onFileSelect?: (file: File) => void;
 }
 
+function CloudUploadIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M7 18a4 4 0 0 1-1-7.9A5 5 0 0 1 16 8a4.5 4.5 0 0 1 1 8.9" />
+      <path d="M12 20v-7M9.5 15.5 12 13l2.5 2.5" />
+    </svg>
+  );
+}
+
 /**
- * The focal point of the homepage: a large drag-and-drop target plus an
- * explicit "Choose Image" button. Purely presentational — it tracks drag
+ * The focal drop target on the homepage. The whole card is a single
+ * semantic `<button>` (no nested interactive elements) — clicking it or
+ * pressing Enter/Space opens the file picker, and it also accepts a
+ * dropped file directly. Purely presentational otherwise: it tracks drag
  * state for visual feedback and forwards a selected File up via
- * `onFileSelect`, but performs no validation, upload, or processing itself.
+ * `onFileSelect`, but performs no validation, upload, or processing.
  */
 export function UploadCard({ onFileSelect }: UploadCardProps) {
   const [isDragging, setIsDragging] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { inputRef, openFilePicker, handleInputChange } = useFileInput(onFileSelect);
   const headingId = useId();
 
-  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];
     if (file) onFileSelect?.(file);
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) onFileSelect?.(file);
-    // Reset so selecting the same file again still fires a change event.
-    event.target.value = "";
-  };
-
   return (
-    <Card
-      noPadding
-      role="group"
-      aria-labelledby={headingId}
+    <button
+      type="button"
+      onClick={openFilePicker}
       onDragOver={handleDragOver}
       onDragEnter={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      aria-labelledby={headingId}
       className={cn(
-        "mx-auto flex w-full max-w-xl flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 text-center",
-        "transition duration-200 ease-in-out sm:p-8",
-        isDragging ? "border-primary bg-surface shadow-md scale-[1.01]" : "border-border hover:border-primary/50"
+        "mx-auto flex w-full max-w-2xl flex-col items-center gap-3 rounded-xl border-2 border-dashed bg-background p-8 text-center shadow-sm sm:p-10",
+        "transition duration-200 ease-in-out",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        isDragging
+          ? "scale-[1.01] border-primary bg-surface shadow-md"
+          : "border-primary/30 hover:border-primary/60 hover:shadow-md"
       )}
     >
       <input
@@ -81,39 +96,17 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
         tabIndex={-1}
       />
 
-      <span
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-surface text-primary"
-        aria-hidden="true"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.75}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6"
-        >
-          <path d="M12 16V4M12 4 7 9M12 4l5 5" />
-          <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-        </svg>
+      <span className="flex h-14 w-14 items-center justify-center text-primary" aria-hidden="true">
+        <CloudUploadIcon className="h-full w-full" />
       </span>
 
-      <p id={headingId} className="font-heading text-base font-semibold text-text-primary sm:text-lg">
-        Drag &amp; Drop Image Here
+      <p id={headingId} className="font-heading text-lg font-semibold text-text-primary">
+        Drag &amp; Drop your image here
       </p>
 
-      <span className="font-body text-sm text-text-secondary">or</span>
-
-      <Button type="button" onClick={() => inputRef.current?.click()}>
-        Choose Image
-      </Button>
-
-      <div className="mt-2 flex flex-col items-center gap-1">
-        <p className="font-body text-xs text-text-secondary">{ACCEPTED_FILE_LABEL}</p>
-        <p className="font-body text-xs text-text-secondary">Maximum file size: {MAX_FILE_SIZE_MB} MB</p>
-      </div>
-    </Card>
+      <p className="font-body text-sm text-text-secondary">
+        {ACCEPTED_FILE_LABEL} up to {MAX_FILE_SIZE_MB}MB
+      </p>
+    </button>
   );
 }

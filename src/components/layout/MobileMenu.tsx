@@ -1,12 +1,18 @@
 import { useState } from "react";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
-import { NAV_LINKS } from "./navLinks";
+import { HomeIcon, NAV_LINKS } from "./navLinks.tsx";
 import { ThemeToggle } from "./ThemeToggle";
 
 export type MobileMenuProps = HTMLAttributes<HTMLDivElement>;
 
 const MENU_ID = "mobile-nav-menu";
+
+const mobileLinkStyles = cn(
+  "flex items-center gap-2 rounded-sm px-3 py-2 font-body text-sm font-medium text-text-secondary",
+  "transition duration-200 ease-in-out hover:bg-surface hover:text-text-primary",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+);
 
 /**
  * Hamburger trigger + slide-down panel for small screens. Shares
@@ -55,17 +61,25 @@ export function MobileMenu({ className, ...props }: MobileMenuProps) {
       >
         <nav aria-label="Mobile" className="flex flex-col p-2">
           <ul className="flex flex-col">
+            <li>
+              <a
+                href="#"
+                aria-current="page"
+                onClick={() => setIsOpen(false)}
+                className={mobileLinkStyles}
+              >
+                <HomeIcon className="h-4 w-4" aria-hidden="true" />
+                Home
+              </a>
+            </li>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "block rounded-sm px-3 py-2 font-body text-sm font-medium text-text-secondary",
-                    "transition duration-200 ease-in-out hover:bg-surface hover:text-text-primary",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  )}
+                  className={mobileLinkStyles}
                 >
+                  <link.icon className="h-4 w-4" aria-hidden="true" />
                   {link.label}
                 </a>
               </li>
