@@ -1,14 +1,16 @@
+import { Hero } from "@/sections/Hero.tsx";
+
 /**
  * Home page.
  *
- * Intentionally empty of content — this sprint only establishes where
- * page structure will live. Future sprints will compose real sections
- * (e.g. `<Hero />`, `<UploadArea />`) from `src/sections` here, in order.
+ * Composes the page's sections in order. Currently just the Hero (which
+ * is the whole first-screen upload experience) — no footer or additional
+ * sections yet.
  */
 export function Home() {
   return (
     <main>
-      {/* Sections will be composed here in future sprints */}
+      <Hero />
     </main>
   );
 }
