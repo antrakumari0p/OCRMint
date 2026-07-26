@@ -78,7 +78,7 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
       onDrop={handleDrop}
       aria-labelledby={headingId}
       className={cn(
-        "mx-auto flex w-full max-w-2xl flex-col items-center gap-3 rounded-xl border-2 border-dashed bg-background p-8 text-center shadow-sm sm:p-10",
+        "mx-auto flex w-full max-w-2xl flex-col items-center gap-2 rounded-xl border-2 border-dashed bg-background p-5 text-center shadow-sm sm:p-6",
         "transition duration-200 ease-in-out",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         isDragging
@@ -96,11 +96,11 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
         tabIndex={-1}
       />
 
-      <span className="flex h-14 w-14 items-center justify-center text-primary" aria-hidden="true">
+      <span className="flex h-10 w-10 items-center justify-center text-primary" aria-hidden="true">
         <CloudUploadIcon className="h-full w-full" />
       </span>
 
-      <p id={headingId} className="font-heading text-lg font-semibold text-text-primary">
+      <p id={headingId} className="font-heading text-base font-semibold text-text-primary">
         Drag &amp; Drop your image here
       </p>
 

@@ -3,6 +3,36 @@
 @tailwind utilities;
 
 @layer base {
+  /* --- Color tokens -------------------------------------------------------
+     Raw RGB triples (no `rgb()` wrapper) so Tailwind can compose them as
+     `rgb(var(--color-x) / <alpha-value>)` in tailwind.config.ts — this is
+     what lets opacity modifiers like `bg-primary/10` keep working. Dark
+     mode is the same token set with different values, scoped under `.dark`
+     on <html> (see src/hooks/useTheme.tsx), so no component needs its own
+     `dark:` variant classes.
+  --------------------------------------------------------------------------- */
+  :root {
+    --color-primary: 16 185 129; /* #10B981 */
+    --color-primary-hover: 5 150 105; /* #059669 */
+    --color-background: 255 255 255; /* #FFFFFF */
+    --color-surface: 248 250 252; /* #F8FAFC */
+    --color-border: 229 231 235; /* #E5E7EB */
+    --color-text-primary: 17 24 39; /* #111827 */
+    --color-text-secondary: 107 114 128; /* #6B7280 */
+    color-scheme: light;
+  }
+
+  .dark {
+    --color-primary: 52 211 153; /* #34D399 — brighter for contrast on dark surfaces */
+    --color-primary-hover: 16 185 129; /* #10B981 */
+    --color-background: 11 18 16; /* #0B1210 */
+    --color-surface: 19 28 26; /* #131C1A */
+    --color-border: 38 51 47; /* #26332F */
+    --color-text-primary: 236 241 239; /* #ECF1EF */
+    --color-text-secondary: 154 172 165; /* #9AACA5 */
+    color-scheme: dark;
+  }
+
   /* --- Reset / baseline ------------------------------------------------ */
   *,
   *::before,
@@ -21,12 +51,12 @@
     @apply bg-background font-body text-text-primary antialiased;
     font-feature-settings: "cv11", "ss01";
     text-rendering: optimizeLegibility;
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
   }
 
   /* --- Typography -------------------------------------------------------
      Headings use Manrope, body copy uses Inter. Sizes/weights are kept
-     unopinionated here since no page content exists yet — components and
-     sections will apply their own scale as they're built.
+     unopinionated here — components and sections apply their own scale.
   ------------------------------------------------------------------------ */
   h1,
   h2,

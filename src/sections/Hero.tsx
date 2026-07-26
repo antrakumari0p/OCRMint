@@ -118,10 +118,12 @@ const TRUST_ITEMS = [
 ] as const;
 
 /**
- * The first (and currently only) screen of OCRMint. The upload
- * experience — CTA buttons + dropzone — is the focal point; heading and
- * subheading exist to orient the user toward it immediately, not to sell
- * the product. No footer, no additional sections.
+ * The first (and currently only) screen of OCRMint. Sized to fit within a
+ * single laptop viewport (~900px tall) alongside the header, without
+ * scrolling — spacing and type scale are intentionally compact rather than
+ * airy. The upload experience — CTA buttons + dropzone — is the focal
+ * point; heading and subheading exist to orient the user toward it
+ * immediately, not to sell the product.
  */
 export function Hero({ onFileSelect }: HeroProps) {
   const { inputRef, openFilePicker, handleInputChange } = useFileInput(onFileSelect);
@@ -130,18 +132,18 @@ export function Hero({ onFileSelect }: HeroProps) {
     <Section
       as="section"
       aria-label="Extract text from an image"
-      className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden py-10 sm:py-12"
+      className="relative flex min-h-[calc(100svh-4.5rem)] items-center overflow-hidden py-6 sm:py-8"
     >
-      <DecorativeBackground theme="ocr" density="high" opacity={0.06} />
+      <DecorativeBackground theme="ocr" density="medium" opacity={0.04} />
 
-      <Container narrow className="relative z-10 flex flex-col items-center gap-8 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+      <Container narrow className="relative z-10 flex flex-col items-center gap-5 text-center sm:gap-6">
+        <div className="flex flex-col items-center gap-3">
+          <h1 className="text-2xl font-bold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">
             <span className="block text-text-primary">Extract Text From Images</span>
             <span className="block text-primary">Instantly.</span>
           </h1>
 
-          <p className="max-w-md font-body text-base text-text-secondary sm:text-lg">
+          <p className="max-w-md font-body text-sm text-text-secondary sm:text-base">
             Upload an image, extract editable text instantly, and keep your files private.
           </p>
         </div>
@@ -172,11 +174,11 @@ export function Hero({ onFileSelect }: HeroProps) {
 
         <UploadCard onFileSelect={onFileSelect} />
 
-        <Card className="grid w-full grid-cols-1 gap-6 p-6 text-left sm:grid-cols-3 sm:gap-4">
+        <Card noPadding className="grid w-full grid-cols-1 gap-4 p-4 text-left sm:grid-cols-3 sm:gap-3 sm:p-5">
           {TRUST_ITEMS.map((item) => (
             <div key={item.title} className="flex items-center gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
-                <item.icon className="h-5 w-5" aria-hidden="true" />
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
+                <item.icon className="h-4.5 w-4.5" aria-hidden="true" />
               </span>
               <span className="flex flex-col">
                 <span className="font-body text-sm font-semibold text-text-primary">{item.title}</span>

@@ -1,5 +1,5 @@
 import { Container, Logo } from "@/components/ui";
-import { useScrolled } from "../../hooks/useScrolled";
+import { useScrolled } from "@/hooks/useScrolled";
 import { cn } from "@/lib/cn";
 import { MintLabsBadge } from "./MintLabsBadge";
 import { Navigation } from "./Navigation";
@@ -25,7 +25,7 @@ export function Header() {
       <Container>
         <div className="flex items-center justify-between gap-4 py-2">
           {/* Brand block: Mint Labs badge -> OCRMint -> tagline */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-0.5">
             <MintLabsBadge />
             <Logo size="lg" />
             <p className="hidden font-body text-xs text-text-secondary sm:block">

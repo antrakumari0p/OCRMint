@@ -12,6 +12,23 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!--
+      Applies the persisted (or OS-preferred) theme before React mounts,
+      so there's no flash of the wrong theme on reload. Mirrors the logic
+      in src/hooks/useTheme.tsx — keep the two in sync if that changes.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("ocrmint-theme");
+          var isDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (isDark) document.documentElement.classList.add("dark");
+        } catch (e) {
+          /* localStorage unavailable — fall back to light theme */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

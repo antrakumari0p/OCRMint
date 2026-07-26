@@ -5,22 +5,29 @@ import type { Config } from "tailwindcss";
  * - This file exposes them as Tailwind utilities (bg-primary, text-secondary, etc.)
  * - tokens.ts exposes the same raw values for use in JS/TS (e.g. inline styles, charts).
  * Keep both in sync when a token changes.
+ *
+ * Colors are wired to CSS custom properties (defined in src/styles/globals.css
+ * under `:root` and `.dark`) rather than static hex values. That's what lets
+ * `darkMode: "class"` below flip every `bg-background`, `text-text-primary`,
+ * etc. across the whole app the moment `.dark` is toggled on <html> — no
+ * component needs its own `dark:` variant classes.
  */
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#10B981",
-          hover: "#059669",
+          DEFAULT: "rgb(var(--color-primary) / <alpha-value>)",
+          hover: "rgb(var(--color-primary-hover) / <alpha-value>)",
         },
-        background: "#FFFFFF",
-        surface: "#F8FAFC",
-        border: "#E5E7EB",
+        background: "rgb(var(--color-background) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
         text: {
-          primary: "#111827",
-          secondary: "#6B7280",
+          primary: "rgb(var(--color-text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--color-text-secondary) / <alpha-value>)",
         },
       },
       fontFamily: {
