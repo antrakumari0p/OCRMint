@@ -132,18 +132,18 @@ export function Hero({ onFileSelect }: HeroProps) {
     <Section
       as="section"
       aria-label="Extract text from an image"
-      className="relative flex min-h-[calc(100svh-4.5rem)] items-center overflow-hidden py-6 sm:py-8"
+      className="relative flex min-h-[calc(100svh-4.5rem)] items-center overflow-hidden py-2 sm:py-3"
     >
-      <DecorativeBackground theme="ocr" density="medium" opacity={0.04} />
+      <DecorativeBackground theme="ocr" density="high" opacity={0.025} />
 
-      <Container narrow className="relative z-10 flex flex-col items-center gap-5 text-center sm:gap-6">
-        <div className="flex flex-col items-center gap-3">
-          <h1 className="text-2xl font-bold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">
+     <Container narrow className="relative z-10 flex flex-col items-center gap-4 text-center sm:gap-6">
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl">
             <span className="block text-text-primary">Extract Text From Images</span>
             <span className="block text-primary">Instantly.</span>
           </h1>
 
-          <p className="max-w-md font-body text-sm text-text-secondary sm:text-base">
+          <p className="max-w-xl font-body text-[13px] text-text-secondary sm:text-base">
             Upload an image, extract editable text instantly, and keep your files private.
           </p>
         </div>
@@ -159,30 +159,30 @@ export function Hero({ onFileSelect }: HeroProps) {
             tabIndex={-1}
           />
 
-          <Button type="button" size="lg" onClick={openFilePicker}>
+          <Button type="button" size="md" onClick={openFilePicker}>
             <UploadIcon className="h-4.5 w-4.5" aria-hidden="true" />
             Upload Image
           </Button>
 
-          <span className="font-body text-sm text-text-secondary">or</span>
+          <span className="font-body text-[13px] text-text-secondary">or</span>
 
-          <Button type="button" variant="secondary" size="lg">
-            <ClipboardIcon className="h-4.5 w-4.5" aria-hidden="true" />
+          <Button type="button" variant="secondary" size="md">
+            <ClipboardIcon className="h-4 w-4" aria-hidden="true" />
             Paste Image
           </Button>
         </div>
 
         <UploadCard onFileSelect={onFileSelect} />
 
-        <Card noPadding className="grid w-full grid-cols-1 gap-4 p-4 text-left sm:grid-cols-3 sm:gap-3 sm:p-5">
+        <Card noPadding className="grid w-full grid-cols-1 gap-4 p-3 text-left sm:grid-cols-3 sm:gap-3 sm:p-4">
           {TRUST_ITEMS.map((item) => (
-            <div key={item.title} className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
+            <div key={item.title} className="flex items-center gap-2">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
                 <item.icon className="h-4.5 w-4.5" aria-hidden="true" />
               </span>
               <span className="flex flex-col">
-                <span className="font-body text-sm font-semibold text-text-primary">{item.title}</span>
-                <span className="font-body text-xs text-text-secondary">{item.subtitle}</span>
+                <span className="font-body text-[13px] font-semibold text-text-primary">{item.title}</span>
+                <span className="font-body text-[11px] text-text-secondary">{item.subtitle}</span>
               </span>
             </div>
           ))}

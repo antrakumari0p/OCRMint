@@ -78,12 +78,12 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
       onDrop={handleDrop}
       aria-labelledby={headingId}
       className={cn(
-        "mx-auto flex w-full max-w-2xl flex-col items-center gap-2 rounded-xl border-2 border-dashed bg-background p-5 text-center shadow-sm sm:p-6",
+        "mx-auto flex w-full max-w-[820px] flex-col items-center gap-1.5 rounded-2xl border-2 border-dashed bg-background p-4 text-center shadow sm:p-5",
         "transition duration-200 ease-in-out",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         isDragging
-          ? "scale-[1.01] border-primary bg-surface shadow-md"
-          : "border-primary/30 hover:border-primary/60 hover:shadow-md"
+          ? "scale-[1.005] border-primary bg-surface shadow-md"
+          : "border-primary/25 hover:border-primary/45 hover:shadow-md"
       )}
     >
       <input
@@ -96,15 +96,15 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
         tabIndex={-1}
       />
 
-      <span className="flex h-10 w-10 items-center justify-center text-primary" aria-hidden="true">
+      <span className="flex h-8 w-8 items-center justify-center text-primary" aria-hidden="true">
         <CloudUploadIcon className="h-full w-full" />
       </span>
 
-      <p id={headingId} className="font-heading text-base font-semibold text-text-primary">
+      <p id={headingId} className="font-heading text-[15px] font-semibold text-text-primary">
         Drag &amp; Drop your image here
       </p>
 
-      <p className="font-body text-sm text-text-secondary">
+      <p className="font-body text-[13px] text-text-secondary">
         {ACCEPTED_FILE_LABEL} up to {MAX_FILE_SIZE_MB}MB
       </p>
     </button>
