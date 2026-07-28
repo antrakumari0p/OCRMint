@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { recognizeText } from "@/services/ocr";
+import { createDocxBlob } from "@/services/docx";
 import type { OcrError, OcrProgress, UseOcrResult } from "@/types/ocr";
 
 const IDLE_PROGRESS: OcrProgress = { status: "idle", percent: 0 };
@@ -73,10 +74,19 @@ export function useOcr(): UseOcrResult {
   }, [text]);
 
   const downloadDocx = useCallback(async () => {
-    // TODO: implement real .docx export (e.g. via the `docx` npm package)
-    // once a document-export dependency is approved for this project.
-    setError({ message: "DOCX export isn't implemented yet." });
-  }, []);
+    if (!text) return;
+    try {
+      const blob = await createDocxBlob(text);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ocrmint-result.docx";
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (cause) {
+      setError(toOcrError(cause));
+    }
+  }, [text]);
 
   const loading = progress.status === "loading";
 
