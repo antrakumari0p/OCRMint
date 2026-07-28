@@ -27,6 +27,8 @@ export interface UseOcrResult {
   progress: OcrProgress;
   /** Sets the image and kicks off recognition. */
   extractText: (image: File) => Promise<void>;
+  /** Overwrites the current text — backs the editable result textarea. */
+  updateText: (value: string) => void;
   /** Resets image, text, error, and progress to their initial state. */
   clear: () => void;
   /** Copies the current text to the clipboard. */

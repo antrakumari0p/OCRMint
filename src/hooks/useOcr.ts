@@ -12,11 +12,10 @@ function toOcrError(cause: unknown): OcrError {
 /**
  * Owns OCR workflow state (selected image, extracted text, progress,
  * error) and the actions that operate on it. `extractText` delegates the
- * actual recognition to `services/ocr.ts` — currently a stub, so this
- * will land in the error state until an OCR engine is wired up there.
- * Keeping the state machine here (rather than inside a component) means
- * the same hook can back both the homepage upload flow and a dedicated
- * results view without duplicating logic.
+ * actual recognition to `services/ocr.ts`, which runs Tesseract.js
+ * entirely in the browser. Keeping the state machine here (rather than
+ * inside a component) means the same hook can back both the homepage
+ * upload flow and a dedicated results view without duplicating logic.
  */
 export function useOcr(): UseOcrResult {
   const [image, setImage] = useState<File | null>(null);
@@ -31,8 +30,8 @@ export function useOcr(): UseOcrResult {
     setProgress({ status: "loading", percent: 0, message: "Starting OCR…" });
 
     try {
-      const result = await recognizeText(file, (percent) =>
-        setProgress({ status: "loading", percent, message: "Recognizing text…" })
+      const result = await recognizeText(file, (percent, message) =>
+        setProgress({ status: "loading", percent, message: message ?? "Recognizing text…" })
       );
       setText(result.text);
       setProgress({ status: "success", percent: 100, message: "Done" });
@@ -40,6 +39,10 @@ export function useOcr(): UseOcrResult {
       setError(toOcrError(cause));
       setProgress({ status: "error", percent: 0, message: "Something went wrong" });
     }
+  }, []);
+
+  const updateText = useCallback((value: string) => {
+    setText(value);
   }, []);
 
   const clear = useCallback(() => {
@@ -78,7 +81,19 @@ export function useOcr(): UseOcrResult {
   const loading = progress.status === "loading";
 
   return useMemo(
-    () => ({ image, text, loading, error, progress, extractText, clear, copy, downloadTxt, downloadDocx }),
-    [image, text, loading, error, progress, extractText, clear, copy, downloadTxt, downloadDocx]
+    () => ({
+      image,
+      text,
+      loading,
+      error,
+      progress,
+      extractText,
+      updateText,
+      clear,
+      copy,
+      downloadTxt,
+      downloadDocx,
+    }),
+    [image, text, loading, error, progress, extractText, updateText, clear, copy, downloadTxt, downloadDocx]
   );
 }
