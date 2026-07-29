@@ -42,6 +42,10 @@ export function useOcr(): UseOcrResult {
     }
   }, []);
 
+  const reportError = useCallback((message: string) => {
+    setError({ message });
+  }, []);
+
   const updateText = useCallback((value: string) => {
     setText(value);
   }, []);
@@ -98,12 +102,26 @@ export function useOcr(): UseOcrResult {
       error,
       progress,
       extractText,
+      reportError,
       updateText,
       clear,
       copy,
       downloadTxt,
       downloadDocx,
     }),
-    [image, text, loading, error, progress, extractText, updateText, clear, copy, downloadTxt, downloadDocx]
+    [
+      image,
+      text,
+      loading,
+      error,
+      progress,
+      extractText,
+      reportError,
+      updateText,
+      clear,
+      copy,
+      downloadTxt,
+      downloadDocx,
+    ]
   );
 }

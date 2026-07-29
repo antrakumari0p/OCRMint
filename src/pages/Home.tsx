@@ -1,25 +1,27 @@
 import { Hero } from "@/sections/Hero";
 import { OcrWorkspace } from "@/sections/OcrWorkspace";
 import { useOcr } from "@/hooks/useOcr";
+import { useClipboardImage } from "@/hooks/useClipboardImage";
 
 /**
  * Home page.
  *
  * Composes the page's sections in order. This is the one place that
  * calls `useOcr()` — its `extractText` goes into `Hero`'s existing
- * `onFileSelect` prop (already there, previously unused), and the rest
- * of the hook's state/actions go into `OcrWorkspace`. Neither `Hero` nor
- * `UploadCard` needed any changes: `Hero` already forwarded
- * `onFileSelect` to its own "Upload Image" button and to `UploadCard`,
- * so wiring happens entirely at this composition layer.
+ * `onFileSelect` prop, and `useClipboardImage` (click + Ctrl/Cmd+V) goes
+ * into the same `extractText` for images, or `reportError` for expected
+ * failures (no image found, permission denied, unsupported browser,
+ * oversized image). Clipboard and file upload converge on the exact same
+ * `extractText` call — there's one OCR pipeline, not two.
  *
  * Before any upload, only `Hero` renders — the homepage is exactly what
- * it was. Once `useOcr` has an image (set the moment `extractText` is
- * called, before recognition even finishes), `Hero` is swapped out for
- * `OcrWorkspace`. This is a plain conditional render driven by existing
- * hook state — no new state, no routing, no reload. Clicking "Clear" in
- * `OcrWorkspace` resets `image` to null, which naturally swaps back to
- * `Hero` with no extra wiring.
+ * it was. `Hero` swaps out for `OcrWorkspace` once there's either an
+ * image (upload/paste succeeded) or an error (e.g. a clipboard paste
+ * failed) — both are existing `useOcr` state, so a failed paste attempt
+ * still gets its message shown via the same `OcrError` card `OcrWorkspace`
+ * already renders for OCR failures, rather than needing a second error UI
+ * anywhere inside the frozen `Hero`. Clicking "Clear" resets both `image`
+ * and `error`, which naturally swaps back to `Hero`.
  *
  * The fade+slide-in keyframes are scoped to this file via an inline
  * `<style>` tag (the same self-contained pattern `DecorativeBackground`
@@ -28,7 +30,13 @@ import { useOcr } from "@/hooks/useOcr";
  */
 export function Home() {
   const ocr = useOcr();
-  const hasUploaded = Boolean(ocr.image);
+  const clipboard = useClipboardImage({
+    onImage: ocr.extractText,
+    onError: ocr.reportError,
+    disabled: ocr.loading,
+  });
+
+  const showWorkspace = Boolean(ocr.image) || Boolean(ocr.error);
 
   return (
     <main>
@@ -39,7 +47,7 @@ export function Home() {
         }
       `}</style>
 
-      {hasUploaded ? (
+      {showWorkspace ? (
         <div key="workspace" className="animate-[ocrmint-section-in_400ms_ease-in-out]">
           <OcrWorkspace
             image={ocr.image}
@@ -56,7 +64,14 @@ export function Home() {
         </div>
       ) : (
         <div key="hero" className="animate-[ocrmint-section-in_400ms_ease-in-out]">
-          <Hero onFileSelect={ocr.extractText} />
+          <Hero
+            onFileSelect={ocr.extractText}
+            onPasteClick={clipboard.pasteFromClipboard}
+            pasteDisabled={!clipboard.isSupported || ocr.loading}
+            pasteAriaLabel={
+              !clipboard.isSupported ? "Clipboard images aren't supported in this browser." : undefined
+            }
+          />
         </div>
       )}
     </main>

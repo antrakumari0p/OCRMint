@@ -27,6 +27,13 @@ export interface UseOcrResult {
   progress: OcrProgress;
   /** Sets the image and kicks off recognition. */
   extractText: (image: File) => Promise<void>;
+  /**
+   * Sets the error state directly, without touching image/text/progress.
+   * Lets callers outside the OCR pipeline itself (e.g. clipboard paste
+   * failures) surface a message through the same error UI as an OCR
+   * failure, rather than needing a second error-display mechanism.
+   */
+  reportError: (message: string) => void;
   /** Overwrites the current text — backs the editable result textarea. */
   updateText: (value: string) => void;
   /** Resets image, text, error, and progress to their initial state. */
