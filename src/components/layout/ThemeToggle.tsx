@@ -20,7 +20,7 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
       aria-pressed={isDark}
       onClick={toggleTheme}
       className={cn(
-        "inline-flex 8 w-8 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background text-text-secondary shadow-sm",
+        "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background text-text-secondary shadow-sm",
         "transition duration-200 ease-in-out :bg-hover:bg-primary/10 hover:text-primary",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         className
