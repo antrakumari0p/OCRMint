@@ -20,8 +20,8 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
       aria-pressed={isDark}
       onClick={toggleTheme}
       className={cn(
-        "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-background text-text-secondary shadow-sm",
-        "transition duration-200 ease-in-out hover:bg-surface hover:text-text-primary",
+        "inline-flex 8 w-8 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background text-text-secondary shadow-sm",
+        "transition duration-200 ease-in-out :bg-hover:bg-primary/10 hover:text-primary",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         className
       )}
@@ -36,7 +36,7 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
           strokeWidth={1.75}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="h-4 w-4"
+          className="h-3.5 w-3.5"
           aria-hidden="true"
         >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
@@ -50,7 +50,7 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
           strokeWidth={1.75}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="h-4 w-4"
+          className="h-3.5 w-3.5"
           aria-hidden="true"
         >
           <circle cx="12" cy="12" r="4" />

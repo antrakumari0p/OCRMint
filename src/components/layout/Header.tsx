@@ -18,17 +18,17 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-200 ease-in-out",
         scrolled
-          ? "border-b border-border bg-background shadow-sm"
+          ? "border-b border-border/70 bg-background shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
           : "border-b border-transparent bg-transparent"
       )}
     >
       <Container>
-        <div className="flex items-center justify-between gap-4 py-2">
+        <div className="flex items-center justify-between gap-3 py-[6px]">
           {/* Brand block: Mint Labs badge -> OCRMint -> tagline */}
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-0">
             <MintLabsBadge />
-            <Logo size="lg" />
-            <p className="hidden font-body text-xs text-text-secondary sm:block">
+            <Logo size="md" />
+            <p className="hidden font-body text-[11px] text-text-secondary sm:block">
               Extract Text From Images Instantly.
             </p>
           </div>

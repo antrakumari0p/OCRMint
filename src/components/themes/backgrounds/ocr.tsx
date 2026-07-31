@@ -196,7 +196,7 @@ const SHAPES: ShapeConfig[] = [
     id: "document",
     minDensity: DENSITY_ORDER.low,
     className:
-      "absolute left-[3%] top-[16%] h-20 w-20 -rotate-6 text-text-primary md:h-28 md:w-28 " +
+      "absolute left-[3%] top-[16%] h-8 w-8 -rotate-6 text-text-primary md:h-12 md:w-12 " +
       "animate-[ml-float-a_22s_ease-in-out_infinite]",
     icon: DocumentIcon,
   },
@@ -204,7 +204,7 @@ const SHAPES: ShapeConfig[] = [
     id: "image-frame",
     minDensity: DENSITY_ORDER.low,
     className:
-      "absolute right-[4%] top-[20%] h-20 w-20 rotate-3 text-text-primary md:h-28 md:w-28 " +
+      "absolute right-[4%] top-[20%] h-8 w-8 rotate-3 text-text-primary md:h-12 md:w-12 " +
       "animate-[ml-float-b_26s_ease-in-out_infinite]",
     icon: ImageFrameIcon,
   },
@@ -212,7 +212,7 @@ const SHAPES: ShapeConfig[] = [
     id: "text-glyph",
     minDensity: DENSITY_ORDER.low,
     className:
-      "absolute left-[10%] top-[2%] h-14 w-14 text-text-primary md:h-20 md:w-20 hidden sm:block " +
+      "absolute left-[10%] top-[2%] h-14 w-14 text-text-primary md:h-8 md:w-8 hidden sm:block " +
       "animate-[ml-float-a_20s_ease-in-out_infinite]",
     icon: TextGlyphIcon,
   },
@@ -236,7 +236,7 @@ const SHAPES: ShapeConfig[] = [
     id: "scanner",
     minDensity: DENSITY_ORDER.medium,
     className:
-      "absolute right-[5%] bottom-[14%] h-20 w-20 rotate-3 text-text-primary md:h-24 md:w-24 hidden md:block " +
+      "absolute right-[5%] bottom-[14%] h-8 w-8 rotate-3 text-text-primary md:h-10 md:w-10 hidden md:block " +
       "animate-[ml-float-b_24s_ease-in-out_infinite]",
     icon: ScannerIcon,
   },
