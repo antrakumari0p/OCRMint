@@ -1,0 +1,10 @@
+{
+  "name": "OCRMint",
+  "short_name": "OCRMint",
+  "description": "Extract text from images instantly.",
+  "theme_color": "#10b981",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": []
+}
