@@ -69,79 +69,127 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={openFilePicker}
-      onDragOver={handleDragOver}
-      onDragEnter={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      aria-labelledby={headingId}
-      className={cn(
-  "group relative mx-auto flex w-full max-w-[900px] flex-col items-center justify-center rounded-[28px]",
-  "border border-primary/15 bg-white/80 backdrop-blur-md",
-  "px-10 py-12",
-  "shadow-[0_20px_70px_rgba(0,0,0,0.06)]",
-  "transition-all duration-300",
-  isDragging
-    ? "scale-[1.01] border-primary shadow-[0_25px_80px_rgba(16,185,129,0.18)]"
-    : "hover:-translate-y-1 hover:shadow-[0_25px_80px_rgba(0,0,0,0.08)]"
-)}
-    
+  <button
+    type="button"
+    onClick={openFilePicker}
+    onDragOver={handleDragOver}
+    onDragEnter={handleDragOver}
+    onDragLeave={handleDragLeave}
+    onDrop={handleDrop}
+    aria-labelledby={headingId}
+    className={cn(
+      "group relative mx-auto flex w-full max-w-[900px] flex-col items-center justify-center overflow-hidden rounded-[28px]",
+      "border px-10 py-8 transition-all duration-300 backdrop-blur-md",
+
+      // Light mode
+      "border-slate-200 bg-white/80 shadow-[0_20px_70px_rgba(0,0,0,0.06)]",
+
+      // Dark mode
+      "dark:border-zinc-700 dark:bg-[#121a18] dark:shadow-[0_20px_70px_rgba(0,0,0,0.55)]",
+
+      isDragging
+        ? "scale-[1.01] border-primary shadow-[0_25px_80px_rgba(16,185,129,0.18)]"
+        : "hover:-translate-y-1 hover:border-primary/50 dark:hover:border-primary/40 hover:shadow-[0_25px_80px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_25px_80px_rgba(0,0,0,0.7)]"
+    )}
+  >
+    <input
+      ref={inputRef}
+      type="file"
+      accept={ACCEPTED_FILE_TYPES.join(",")}
+      onChange={handleInputChange}
+      className="sr-only"
+      aria-hidden="true"
+      tabIndex={-1}
+    />
+
+    {/* Upload Icon */}
+
+    <div
+      className="
+      flex h-24 w-24 items-center justify-center rounded-3xl
+      bg-gradient-to-br
+      from-primary/20
+      via-primary/10
+      to-transparent
+      ring-1 ring-primary/20
+      dark:from-primary/30
+      dark:via-primary/15
+      dark:ring-primary/30
+    "
     >
-      <input
-        ref={inputRef}
-        type="file"
-        accept={ACCEPTED_FILE_TYPES.join(",")}
-        onChange={handleInputChange}
-        className="sr-only"
-        aria-hidden="true"
-        tabIndex={-1}
-      />
-<div className="flex h-8 w-8 items-center justify-center rounded-[30px] bg-gradient-to-br
-from-primary/20
-via-primary/10
-to-transparent
-ring-1 ring-primary/20">
-  <CloudUploadIcon className="h-8 w-8" />
-</div>
+      <CloudUploadIcon className="h-10 w-10 text-primary" />
+    </div>
 
-<h2
-  id={headingId}
-  className="mt-2 font-heading text-xl font-bold tracking-tight text-text-primary"
->
-  Drop your image here
-</h2>
+    {/* Heading */}
 
-<p className="max-w-md text-sm leading-6 text-text-secondary">
-  or Upload an image or drag it here to begin OCR
-</p>
+    <h2
+      id={headingId}
+      className="mt-6 font-heading text-3xl font-bold tracking-tight text-text-primary dark:text-white"
+    >
+      Drop your image here
+    </h2>
 
-<div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-text-secondary">
-  <span className="rounded-full bg-surface px-3 py-1">
-    PNG
-  </span>
+    {/* Subtitle */}
 
-  <span className="rounded-full bg-surface px-3 py-1">
-    JPG
-  </span>
+    <p className="mt-3 max-w-lg text-center text-base leading-7 text-text-secondary dark:text-zinc-400">
+      Upload an image or drag it here to instantly extract editable text.
+    </p>
 
-  <span className="rounded-full bg-surface px-3 py-1">
-    JPEG
-  </span>
+    {/* File Types */}
 
-  <span className="rounded-full bg-surface px-3 py-1">
-    WEBP
-  </span>
-</div>
+    <div className="mt-8 flex flex-wrap justify-center gap-3">
+      {["PNG", "JPG", "JPEG", "WEBP"].map((type) => (
+        <span
+          key={type}
+          className="
+          rounded-full
+          border
+          border-slate-200
+          bg-slate-50
+          px-5
+          py-2
+          text-xs
+          font-semibold
+          tracking-wide
+          text-slate-500
 
-<p className="mt-3 text-xs text-text-secondary/70">
-  Maximum file size: {MAX_FILE_SIZE_MB} MB
-</p>
+          dark:border-zinc-700
+          dark:bg-zinc-800
+          dark:text-zinc-300
+        "
+        >
+          {type}
+        </span>
+      ))}
+    </div>
 
-<div className="mt-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
-  🔒 Processed locally • Never stored
-</div>
-    </button>
+    {/* Max Size */}
+
+    <p className="mt-7 text-sm text-slate-500 dark:text-zinc-500">
+      Maximum file size: {MAX_FILE_SIZE_MB} MB
+    </p>
+
+    {/* Privacy Badge */}
+
+    <div
+      className="
+      mt-5
+      rounded-full
+      border
+      border-primary/20
+      bg-primary/5
+      px-6
+      py-2
+      text-sm
+      font-medium
+      text-primary
+
+      dark:border-primary/25
+      dark:bg-primary/10
+    "
+    >
+      🔒 Processed locally • Never stored
+    </div>
+  </button>
   );
 }

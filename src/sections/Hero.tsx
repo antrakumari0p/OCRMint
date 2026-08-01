@@ -5,16 +5,9 @@ import { useFileInput } from "@/hooks/useFileInput";
 import { ACCEPTED_FILE_TYPES, UploadCard } from "./UploadCard";
 
 export interface HeroProps {
-  /**
-   * Called with the selected file, whichever entry point the user uses
-   * (the Upload Image button, drag-and-drop, or Paste Image).
-   */
   onFileSelect?: (file: File) => void;
-  /** Wires the existing "Paste Image" button to a real handler. */
   onPasteClick?: () => void;
-  /** Disables the "Paste Image" button — e.g. unsupported browser or OCR already running. */
   pasteDisabled?: boolean;
-  /** Overrides the Paste button's accessible name — used to explain why it's disabled. */
   pasteAriaLabel?: string;
 }
 
@@ -104,110 +97,105 @@ function ShieldCheckIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 const TRUST_ITEMS = [
-  {
-    label: "Private",
-    icon: LockIcon,
-  },
-  {
-    label: "Fast OCR",
-    icon: BoltIcon,
-  },
-  {
-    label: "Free",
-    icon: ShieldCheckIcon,
-  },
-  {
-    label: "Browser Based",
-    icon: UploadIcon,
-  },
+  { label: "Private", icon: LockIcon },
+  { label: "Fast OCR", icon: BoltIcon },
+  { label: "Free", icon: ShieldCheckIcon },
+  { label: "Browser Based", icon: UploadIcon },
 ] as const;
 
-/**
- * The first (and currently only) screen of OCRMint. Sized to fit within a
- * single laptop viewport (~900px tall) alongside the header, without
- * scrolling — spacing and type scale are intentionally compact rather than
- * airy. The upload experience — CTA buttons + dropzone — is the focal
- * point; heading and subheading exist to orient the user toward it
- * immediately, not to sell the product.
- */
-export function Hero({ onFileSelect, onPasteClick, pasteDisabled, pasteAriaLabel }: HeroProps) {
-  const { inputRef, openFilePicker, handleInputChange } = useFileInput(onFileSelect);
+export function Hero({
+  onFileSelect,
+  onPasteClick,
+  pasteDisabled,
+  pasteAriaLabel,
+}: HeroProps) {
+  const { inputRef, openFilePicker, handleInputChange } =
+    useFileInput(onFileSelect);
 
   return (
     <Section
       as="section"
       aria-label="Extract text from an image"
-      className="relative flex min-h-[85vh] items-center overflow-hidden py-6 sm:py-8"
+      className="relative flex min-h-[85vh] items-center overflow-hidden py-5"
     >
-      <DecorativeBackground theme="ocr" density="medium" opacity={0.07} />
+      <DecorativeBackground
+        theme="ocr"
+        density="medium"
+        opacity={0.07}
+      />
 
-      <Container className="relative z-10 flex flex-col items-center gap-8 text-center sm:gap-6">
-        <div className="flex flex-col items-center gap-3">
-       <h1 className="text-2xl font-bold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">
-  <span className="block text-text-primary">Extract Text From Images</span>
-  <span className="block text-primary">Instantly.</span>
-</h1>
+      <Container className="relative z-10 max-w-6xl">
 
-          <p className="max-w-md font-body text-sm text-text-secondary sm:text-base">
-            Convert screenshots, scanned documents and photos into editable text —
-  directly in your browser, fast and privately.
+        <div className="flex flex-col items-center text-center">
+
+          <h1 className="max-w-4xl 3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
+            Extract Text From Images
+            <br />
+
+            <span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
+              Instantly.
+            </span>
+          </h1>
+
+          <p className="mt-3 max-w-xl text-base leading-7 text-text-secondary">
+            Convert screenshots, scanned documents and photos into editable text
+            directly in your browser. Fast, private and completely free.
           </p>
-        </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4">
           <input
             ref={inputRef}
             type="file"
             accept={ACCEPTED_FILE_TYPES.join(",")}
             onChange={handleInputChange}
             className="sr-only"
-            aria-hidden="true"
-            tabIndex={-1}
           />
 
-          <Button type="button" size="lg" onClick={openFilePicker}>
-            <UploadIcon className="h-4.5 w-4.5" aria-hidden="true" />
-            Upload Image
-          </Button>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
 
-          <span className="font-body text-sm text-text-secondary">or</span>
+            <Button
+              size="md"
+              onClick={openFilePicker}
+            >
+              <UploadIcon className="h-4 w-4" />
+              Upload Image
+            </Button>
 
-          <Button
-            type="button"
-            variant="secondary"
-            size="lg"
-            onClick={onPasteClick}
-            disabled={pasteDisabled}
-            aria-label={pasteAriaLabel ?? "Paste image from clipboard"}
-          >
-            <ClipboardIcon className="h-4.5 w-4.5" aria-hidden="true" />
-            Paste Image
-          </Button>
+            <Button
+              size="md"
+              variant="secondary"
+              onClick={onPasteClick}
+              disabled={pasteDisabled}
+              aria-label={
+                pasteAriaLabel ?? "Paste image from clipboard"
+              }
+            >
+              <ClipboardIcon className="h-4 w-4" />
+              Paste Image
+            </Button>
+
+          </div>
+
+          <div className="mt-10 w-full">
+            <UploadCard onFileSelect={onFileSelect} />
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+
+            {TRUST_ITEMS.map((item) => (
+              <div
+                key={item.label}
+                className="flex items-center gap-2 text-sm font-medium text-text-secondary"
+              >
+                <item.icon className="h-4 w-4 text-primary" />
+                {item.label}
+              </div>
+            ))}
+
+          </div>
+
         </div>
-
-        <UploadCard onFileSelect={onFileSelect} />
-
-<div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-text-secondary">
-
-  {TRUST_ITEMS.map((item) => (
-    <div
-      key={item.label}
-      className="flex items-center gap-1.5"
-    >
-      <item.icon
-        className="h-4 w-4 text-primary"
-      />
-
-      <span className="font-medium">
-        {item.label}
-      </span>
-    </div>
-  ))}
-
-</div>
 
       </Container>
     </Section>
   );
 }
-
