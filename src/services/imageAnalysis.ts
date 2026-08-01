@@ -11,6 +11,10 @@ export interface ImageAnalysis {
   isHighContrast: boolean;
   /** Estimated typical text-line height, in pixels, scaled to the original image's resolution. */
   estimatedTextLineHeight: number;
+  /** Number of distinct horizontal text-line bands found — used for layout classification (see services/ocr/). */
+  detectedTextLineCount: number;
+  /** Fraction (0–1) of image rows classified as containing text, vs. whitespace. */
+  textCoverageRatio: number;
   /** 0–1; higher means more visible speckle/compression noise. */
   noiseLevel: number;
   hasTransparency: boolean;
@@ -77,16 +81,26 @@ function computeNoiseLevel(data: Uint8ClampedArray, width: number, height: numbe
   return Math.min(Math.max(averageDiff / 18, 0), 1);
 }
 
+export interface TextLayoutStats {
+  /** Median text-line height, in analysis-image pixels (scaled to original resolution by the caller). */
+  lineHeight: number;
+  /** Count of distinct horizontal "text" row bands found. */
+  lineCount: number;
+  /** Fraction (0–1) of rows classified as "text" vs. whitespace. */
+  coverageRatio: number;
+}
+
 /**
- * Estimates a typical text line's height in pixels via a horizontal
- * projection profile — a classical, lightweight document-analysis
- * technique (no ML involved): rows containing text are noticeably darker
- * on average than the whitespace between lines, so the median length of
- * contiguous "dark" row runs approximates one line's height. Returns the
- * *median* run length specifically so a few outlier dark rows (a photo's
- * shadow, a ruled margin line) don't skew the estimate.
+ * Builds a horizontal projection profile (rows containing text are
+ * noticeably darker on average than the whitespace between lines) and
+ * derives three related stats from that single scan: an estimated line
+ * height (median run length — resistant to a few outlier dark rows like
+ * a photo's shadow), how many distinct line bands were found, and what
+ * fraction of the image's height they cover. `services/ocr/ocrAnalysis.ts`
+ * uses `lineCount`/`coverageRatio` for page-segmentation-mode selection,
+ * reusing this same scan rather than re-analyzing the image.
  */
-function estimateTextLineHeight(data: Uint8ClampedArray, width: number, height: number): number {
+function analyzeTextLayout(data: Uint8ClampedArray, width: number, height: number): TextLayoutStats {
   const rowDarkness = new Array<number>(height);
 
   for (let y = 0; y < height; y++) {
@@ -102,10 +116,12 @@ function estimateTextLineHeight(data: Uint8ClampedArray, width: number, height: 
   const threshold = meanDarkness * 1.15;
 
   const runLengths: number[] = [];
+  let textRowCount = 0;
   let currentRun = 0;
   for (let y = 0; y < height; y++) {
     if (rowDarkness[y] > threshold) {
       currentRun++;
+      textRowCount++;
     } else if (currentRun > 0) {
       runLengths.push(currentRun);
       currentRun = 0;
@@ -113,10 +129,16 @@ function estimateTextLineHeight(data: Uint8ClampedArray, width: number, height: 
   }
   if (currentRun > 0) runLengths.push(currentRun);
 
-  if (runLengths.length === 0) return height; // no clear text bands found — treat as "large enough"
+  const coverageRatio = height > 0 ? textRowCount / height : 0;
+
+  if (runLengths.length === 0) {
+    return { lineHeight: height, lineCount: 0, coverageRatio }; // no clear text bands found
+  }
 
   runLengths.sort((a, b) => a - b);
-  return runLengths[Math.floor(runLengths.length / 2)];
+  const medianLineHeight = runLengths[Math.floor(runLengths.length / 2)];
+
+  return { lineHeight: medianLineHeight, lineCount: runLengths.length, coverageRatio };
 }
 
 /**
@@ -143,7 +165,7 @@ export function analyzeLoadedImage(image: HTMLImageElement): ImageAnalysis {
     const hasTransparency = detectTransparency(data);
     const { brightness, contrast } = computeBrightnessAndContrast(data);
     const noiseLevel = computeNoiseLevel(data, analysisWidth, analysisHeight);
-    const lineHeightOnAnalysisScale = estimateTextLineHeight(data, analysisWidth, analysisHeight);
+    const layoutStats = analyzeTextLayout(data, analysisWidth, analysisHeight);
     const scaleToOriginal = analysisWidth > 0 ? width / analysisWidth : 1;
 
     return {
@@ -152,7 +174,9 @@ export function analyzeLoadedImage(image: HTMLImageElement): ImageAnalysis {
       averageBrightness: brightness,
       averageContrast: contrast,
       isHighContrast: contrast > HIGH_CONTRAST_STDDEV_THRESHOLD,
-      estimatedTextLineHeight: lineHeightOnAnalysisScale * scaleToOriginal,
+      estimatedTextLineHeight: layoutStats.lineHeight * scaleToOriginal,
+      detectedTextLineCount: layoutStats.lineCount,
+      textCoverageRatio: layoutStats.coverageRatio,
       noiseLevel,
       hasTransparency,
     };

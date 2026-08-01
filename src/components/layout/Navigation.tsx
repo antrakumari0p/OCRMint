@@ -22,7 +22,7 @@ export function Navigation({ className, ...props }: NavigationProps) {
       <ul className="flex items-center gap-6">
         <li>
           <a
-            href="#"
+            href="/"
             aria-current="page"
             className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 font-body text-sm font-medium text-primary transition duration-200 ease-in-out hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >

@@ -89,7 +89,7 @@ export interface NavLink {
  * `Navigation` (desktop) and `MobileMenu` so the two never drift apart.
  */
 export const NAV_LINKS: NavLink[] = [
-  { label: "How It Works", href: "#how-it-works", icon: DocumentIcon },
-  { label: "Privacy", href: "#privacy", icon: ShieldIcon },
-  { label: "About", href: "#about", icon: UserIcon },
+  { label: "How It Works", href: "/how-it-works", icon: DocumentIcon },
+  { label: "Privacy", href: "/privacy", icon: ShieldIcon },
+  { label: "About", href: "/about", icon: UserIcon },
 ];

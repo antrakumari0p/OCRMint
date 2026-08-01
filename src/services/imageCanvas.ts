@@ -85,3 +85,29 @@ export function destroyCanvas(canvas: HTMLCanvasElement): void {
   canvas.width = 0;
   canvas.height = 0;
 }
+
+/**
+ * Rotates an image by a multiple of 90 degrees and returns the result as
+ * a Blob. Used by orientation correction (services/ocr/ocrAnalysis.ts) —
+ * lives here rather than there since it's generic canvas plumbing, not
+ * OCR-specific logic.
+ */
+export async function rotateImage(image: HTMLImageElement, degrees: 90 | 180 | 270): Promise<Blob> {
+  const swapDimensions = degrees === 90 || degrees === 270;
+  const canvas = document.createElement("canvas");
+  canvas.width = swapDimensions ? image.naturalHeight : image.naturalWidth;
+  canvas.height = swapDimensions ? image.naturalWidth : image.naturalHeight;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D context unavailable");
+
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate((degrees * Math.PI) / 180);
+  ctx.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2);
+
+  try {
+    return await canvasToBlob(canvas);
+  } finally {
+    destroyCanvas(canvas);
+  }
+}

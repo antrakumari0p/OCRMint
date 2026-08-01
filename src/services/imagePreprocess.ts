@@ -42,7 +42,13 @@ const THRESHOLD_MIN_RADIUS = 10;
 const THRESHOLD_MAX_RADIUS = 35;
 const THRESHOLD_BIAS = 10; // moderate — preserves thin serif strokes
 
-const preprocessCache = new WeakMap<Blob, Promise<Blob>>();
+const preprocessCache = new WeakMap<Blob, Promise<PreprocessResult>>();
+
+export interface PreprocessResult {
+  blob: Blob;
+  /** Exposed so callers (see services/ocr/ocrRunner.ts) can reuse this for PSM selection instead of re-analyzing. */
+  analysis: ImageAnalysis;
+}
 
 /** Upscales only if estimated text is small; never upscales otherwise. */
 function computeTargetDimensions(analysis: ImageAnalysis): { width: number; height: number } {
@@ -194,7 +200,7 @@ function applyAdaptiveThreshold(imageData: ImageData): void {
   }
 }
 
-async function runAdaptivePipeline(source: Blob): Promise<Blob> {
+async function runAdaptivePipeline(source: Blob): Promise<PreprocessResult> {
   const image = await loadImage(source);
   const analysis = analyzeLoadedImage(image); // reuses the already-decoded image — no second decode
   const { width, height } = computeTargetDimensions(analysis);
@@ -214,7 +220,8 @@ async function runAdaptivePipeline(source: Blob): Promise<Blob> {
 
     ctx.putImageData(imageData, 0, 0);
 
-    return await canvasToBlob(canvas);
+    const blob = await canvasToBlob(canvas);
+    return { blob, analysis };
   } finally {
     destroyCanvas(canvas);
   }
@@ -222,11 +229,14 @@ async function runAdaptivePipeline(source: Blob): Promise<Blob> {
 
 /**
  * Analyzes `source`, then runs an adaptive enhancement pipeline suited
- * to what was found, and returns the result as a Blob. Safe to call more
- * than once with the same File/Blob — repeat calls return the same
- * in-flight/cached result rather than reprocessing.
+ * to what was found, and returns both the processed Blob and the
+ * analysis that drove it (see `PreprocessResult`) — the analysis is
+ * exposed so `services/ocr/ocrRunner.ts` can reuse it for page-
+ * segmentation-mode selection rather than analyzing the image twice.
+ * Safe to call more than once with the same File/Blob — repeat calls
+ * return the same in-flight/cached result rather than reprocessing.
  */
-export function preprocessImage(source: File | Blob): Promise<Blob> {
+export function preprocessImage(source: File | Blob): Promise<PreprocessResult> {
   const cached = preprocessCache.get(source);
   if (cached) return cached;
 

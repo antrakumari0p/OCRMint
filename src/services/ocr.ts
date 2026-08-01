@@ -40,7 +40,7 @@ export async function recognizeText(
 ): Promise<OcrResult> {
   let ocrInput: Blob = image;
   try {
-    ocrInput = await preprocessImage(image);
+    ocrInput = (await preprocessImage(image)).blob;;
   } catch {
     ocrInput = image;
   }
