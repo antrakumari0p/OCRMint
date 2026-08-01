@@ -1,0 +1,5 @@
+User-agent: *
+
+Allow: /
+
+Sitemap: https://ocr-mint-ed6s1g3hu-mint-labs.vercel.app/sitemap.xml
