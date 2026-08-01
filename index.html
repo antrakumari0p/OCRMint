@@ -1,37 +1,176 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OCRMint | Mint Labs</title>
+    <!-- ==========================================================
+         Basic
+    =========================================================== -->
 
-    <!-- Font loading: Manrope (headings) + Inter (body) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>
+      OCRMint – Free Image to Text OCR Online | Mint Labs
+    </title>
+
+    <meta
+      name="description"
+      content="Extract text from images instantly with OCRMint. Free browser-based OCR that keeps your files private. Convert JPG, PNG and WEBP images into editable text in seconds."
+    />
+
+    <meta
+      name="keywords"
+      content="OCR, Image to Text, OCR Online, Free OCR, OCRMint, Image OCR, Text Recognition, JPG to Text, PNG to Text, OCR Tool"
+    />
+
+    <meta
+      name="author"
+      content="Mint Labs"
+    />
+
+    <meta
+      name="robots"
+      content="index,follow"
+    />
+
+    <!-- ==========================================================
+         Canonical
+    =========================================================== -->
+
+    <link
+      rel="canonical"
+      href="https://ocr-mint-ed6s1g3hu-mint-labs.vercel.app/"
+    />
+
+    <!-- ==========================================================
+         Theme
+    =========================================================== -->
+
+    <meta
+      name="theme-color"
+      content="#22c58b"
+    />
+
+    <meta
+      name="color-scheme"
+      content="light dark"
+    />
+
+    <!-- ==========================================================
+         Open Graph
+    =========================================================== -->
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:title"
+      content="OCRMint – Free Image to Text OCR"
+    />
+
+    <meta
+      property="og:description"
+      content="Fast, private and browser-based OCR. Extract text from images without uploading your files."
+    />
+
+    <meta
+      property="og:url"
+      content="https://ocr-mint-ed6s1g3hu-mint-labs.vercel.app/"
+    />
+
+    <meta
+      property="og:site_name"
+      content="OCRMint"
+    />
+
+    <!-- Add later when logo exists -->
+    <!--
+    <meta property="og:image" content="/social-preview.png" />
+    -->
+
+    <!-- ==========================================================
+         Twitter
+    =========================================================== -->
+
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
+    <meta
+      name="twitter:title"
+      content="OCRMint – Free Image to Text OCR"
+    />
+
+    <meta
+      name="twitter:description"
+      content="Extract text instantly while keeping your images private."
+    />
+
+    <!-- ==========================================================
+         Icons
+    =========================================================== -->
+
+    <link
+      rel="icon"
+      href="/favicon.ico"
+    />
+
+    <!-- ==========================================================
+         Fonts
+    =========================================================== -->
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
-    <!--
-      Applies the persisted (or OS-preferred) theme before React mounts,
-      so there's no flash of the wrong theme on reload. Mirrors the logic
-      in src/hooks/useTheme.tsx — keep the two in sync if that changes.
-    -->
+    <!-- ==========================================================
+         Prevent Theme Flash
+    =========================================================== -->
+
     <script>
       (function () {
         try {
           var stored = localStorage.getItem("ocrmint-theme");
-          var isDark = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-          if (isDark) document.documentElement.classList.add("dark");
-        } catch (e) {
-          /* localStorage unavailable — fall back to light theme */
-        }
+
+          var isDark = stored
+            ? stored === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+          if (isDark) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
       })();
     </script>
+
   </head>
+
   <body>
+
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <script
+      type="module"
+      src="/src/main.tsx"
+    ></script>
+
   </body>
 </html>
