@@ -31,7 +31,7 @@ export interface DecorativeBackgroundProps {
  */
 export function DecorativeBackground({
   theme,
-  opacity = 0.04,
+  opacity = 0.07,
   density = "low",
   className,
 }: DecorativeBackgroundProps) {

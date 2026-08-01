@@ -9,7 +9,7 @@ import { useFileInput } from "@/hooks/useFileInput";
  * in `Hero`) and the label copy below.
  */
 export const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/webp"] as const;
-export const ACCEPTED_FILE_LABEL = "PNG, JPG, JPEG, WEBP";
+export const ACCEPTED_FILE_LABEL = "Supports PNG • JPG • JPEG • WEBP";
 export const MAX_FILE_SIZE_MB = 10;
 
 export interface UploadCardProps {
@@ -78,13 +78,16 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
       onDrop={handleDrop}
       aria-labelledby={headingId}
       className={cn(
-        "mx-auto flex w-full max-w-[820px] flex-col items-center gap-1.5 rounded-2xl border-2 border-dashed bg-background p-4 text-center shadow sm:p-5",
-        "transition duration-200 ease-in-out",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-        isDragging
-          ? "scale-[1.005] border-primary bg-surface shadow-md"
-          : "border-primary/25 hover:border-primary/45 hover:shadow-md"
-      )}
+  "group relative mx-auto flex w-full max-w-[900px] flex-col items-center justify-center rounded-[28px]",
+  "border border-primary/15 bg-white/80 backdrop-blur-md",
+  "px-10 py-12",
+  "shadow-[0_20px_70px_rgba(0,0,0,0.06)]",
+  "transition-all duration-300",
+  isDragging
+    ? "scale-[1.01] border-primary shadow-[0_25px_80px_rgba(16,185,129,0.18)]"
+    : "hover:-translate-y-1 hover:shadow-[0_25px_80px_rgba(0,0,0,0.08)]"
+)}
+    
     >
       <input
         ref={inputRef}
@@ -95,18 +98,50 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
         aria-hidden="true"
         tabIndex={-1}
       />
+<div className="flex h-8 w-8 items-center justify-center rounded-[30px] bg-gradient-to-br
+from-primary/20
+via-primary/10
+to-transparent
+ring-1 ring-primary/20">
+  <CloudUploadIcon className="h-8 w-8" />
+</div>
 
-      <span className="flex h-8 w-8 items-center justify-center text-primary" aria-hidden="true">
-        <CloudUploadIcon className="h-full w-full" />
-      </span>
+<h2
+  id={headingId}
+  className="mt-2 font-heading text-xl font-bold tracking-tight text-text-primary"
+>
+  Drop your image here
+</h2>
 
-      <p id={headingId} className="font-heading text-[15px] font-semibold text-text-primary">
-        Drag &amp; Drop your image here
-      </p>
+<p className="max-w-md text-sm leading-6 text-text-secondary">
+  or Upload an image or drag it here to begin OCR
+</p>
 
-      <p className="font-body text-[13px] text-text-secondary">
-        {ACCEPTED_FILE_LABEL} up to {MAX_FILE_SIZE_MB}MB
-      </p>
+<div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-text-secondary">
+  <span className="rounded-full bg-surface px-3 py-1">
+    PNG
+  </span>
+
+  <span className="rounded-full bg-surface px-3 py-1">
+    JPG
+  </span>
+
+  <span className="rounded-full bg-surface px-3 py-1">
+    JPEG
+  </span>
+
+  <span className="rounded-full bg-surface px-3 py-1">
+    WEBP
+  </span>
+</div>
+
+<p className="mt-3 text-xs text-text-secondary/70">
+  Maximum file size: {MAX_FILE_SIZE_MB} MB
+</p>
+
+<div className="mt-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+  🔒 Processed locally • Never stored
+</div>
     </button>
   );
 }

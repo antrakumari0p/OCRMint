@@ -1,5 +1,5 @@
 import type { SVGProps } from "react";
-import { Button, Card, Container, Section } from "@/components/ui";
+import { Button, Container, Section } from "@/components/ui";
 import { DecorativeBackground } from "@/components/background/DecorativeBackground";
 import { useFileInput } from "@/hooks/useFileInput";
 import { ACCEPTED_FILE_TYPES, UploadCard } from "./UploadCard";
@@ -105,19 +105,20 @@ function ShieldCheckIcon(props: SVGProps<SVGSVGElement>) {
 
 const TRUST_ITEMS = [
   {
-    title: "100% Private",
-    subtitle: "Your images never leave your device.",
+    label: "Private",
     icon: LockIcon,
   },
   {
-    title: "Lightning Fast",
-    subtitle: "Extract text in seconds.",
+    label: "Fast OCR",
     icon: BoltIcon,
   },
   {
-    title: "Secure & Reliable",
-    subtitle: "Your data is safe with us.",
+    label: "Free",
     icon: ShieldCheckIcon,
+  },
+  {
+    label: "Browser Based",
+    icon: UploadIcon,
   },
 ] as const;
 
@@ -136,23 +137,24 @@ export function Hero({ onFileSelect, onPasteClick, pasteDisabled, pasteAriaLabel
     <Section
       as="section"
       aria-label="Extract text from an image"
-      className="relative flex min-h-[calc(100svh-4.5rem)] items-center overflow-hidden py-6 sm:py-8"
+      className="relative flex min-h-[85vh] items-center overflow-hidden py-6 sm:py-8"
     >
-      <DecorativeBackground theme="ocr" density="medium" opacity={0.04} />
+      <DecorativeBackground theme="ocr" density="medium" opacity={0.07} />
 
-      <Container narrow className="relative z-10 flex flex-col items-center gap-5 text-center sm:gap-6">
+      <Container className="relative z-10 flex flex-col items-center gap-8 text-center sm:gap-6">
         <div className="flex flex-col items-center gap-3">
-          <h1 className="text-2xl font-bold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">
-            <span className="block text-text-primary">Extract Text From Images</span>
-            <span className="block text-primary">Instantly.</span>
-          </h1>
+       <h1 className="text-2xl font-bold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">
+  <span className="block text-text-primary">Extract Text From Images</span>
+  <span className="block text-primary">Instantly.</span>
+</h1>
 
           <p className="max-w-md font-body text-sm text-text-secondary sm:text-base">
-            Upload an image, extract editable text instantly, and keep your files private.
+            Convert screenshots, scanned documents and photos into editable text —
+  directly in your browser, fast and privately.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-4">
           <input
             ref={inputRef}
             type="file"
@@ -185,20 +187,27 @@ export function Hero({ onFileSelect, onPasteClick, pasteDisabled, pasteAriaLabel
 
         <UploadCard onFileSelect={onFileSelect} />
 
-        <Card noPadding className="grid w-full grid-cols-1 gap-4 p-4 text-left sm:grid-cols-3 sm:gap-3 sm:p-5">
-          {TRUST_ITEMS.map((item) => (
-            <div key={item.title} className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
-                <item.icon className="h-4.5 w-4.5" aria-hidden="true" />
-              </span>
-              <span className="flex flex-col">
-                <span className="font-body text-sm font-semibold text-text-primary">{item.title}</span>
-                <span className="font-body text-xs text-text-secondary">{item.subtitle}</span>
-              </span>
-            </div>
-          ))}
-        </Card>
+<div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-text-secondary">
+
+  {TRUST_ITEMS.map((item) => (
+    <div
+      key={item.label}
+      className="flex items-center gap-1.5"
+    >
+      <item.icon
+        className="h-4 w-4 text-primary"
+      />
+
+      <span className="font-medium">
+        {item.label}
+      </span>
+    </div>
+  ))}
+
+</div>
+
       </Container>
     </Section>
   );
 }
+
