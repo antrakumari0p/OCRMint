@@ -137,31 +137,36 @@ export function UploadCard({ onFileSelect }: UploadCardProps) {
 
     {/* File Types */}
 
-    <div className="mt-8 flex flex-wrap justify-center gap-3">
-      {["PNG", "JPG", "JPEG", "WEBP"].map((type) => (
-        <span
-          key={type}
-          className="
-          rounded-full
-          border
-          border-slate-200
-          bg-slate-50
-          px-5
-          py-2
-          text-xs
-          font-semibold
-          tracking-wide
-          text-slate-500
+{/* File Types */}
 
-          dark:border-zinc-700
-          dark:bg-zinc-800
-          dark:text-zinc-300
-        "
-        >
-          {type}
-        </span>
-      ))}
-    </div>
+<div className="mt-8 grid w-full max-w-[220px] grid-cols-2 gap-3 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center">
+
+  {["PNG", "JPG", "JPEG", "WEBP"].map((type) => (
+    <span
+      key={type}
+      className="
+        rounded-full
+        border
+        border-slate-200
+        bg-slate-50
+        px-5
+        py-2
+        text-center
+        text-xs
+        font-semibold
+        tracking-wide
+        text-slate-500
+
+        dark:border-zinc-700
+        dark:bg-zinc-800
+        dark:text-zinc-300
+      "
+    >
+      {type}
+    </span>
+  ))}
+
+</div>
 
     {/* Max Size */}
 
