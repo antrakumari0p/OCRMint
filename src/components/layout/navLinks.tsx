@@ -83,7 +83,22 @@ export interface NavLink {
   href: string;
   icon: NavIcon;
 }
-
+export function MailIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
+  );
+}
 /**
  * Single source of truth for the standard nav links, shared between
  * `Navigation` (desktop) and `MobileMenu` so the two never drift apart.
@@ -92,4 +107,6 @@ export const NAV_LINKS: NavLink[] = [
   { label: "How It Works", href: "/how-it-works", icon: DocumentIcon },
   { label: "Privacy", href: "/privacy", icon: ShieldIcon },
   { label: "About", href: "/about", icon: UserIcon },
+  { label: "Contact", href: "/contact", icon: MailIcon },
+  { label: "FAQ", href: "/faq", icon: DocumentIcon },
 ];

@@ -86,7 +86,7 @@ export function About() {
         <Container narrow className="flex flex-col items-center gap-6 text-center">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Ready to extract text?</h2>
           <Button type="button" size="lg" onClick={() => navigate("/")}>
-            Start Using OCRMint
+            Try OCRMint Free
           </Button>
         </Container>
       </Section>
