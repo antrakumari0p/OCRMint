@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { HTMLAttributes } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
-import { HomeIcon, NAV_LINKS } from "./navLinks.tsx";
+import { HomeIcon, NAV_LINKS } from "./navLinks";
 import { ThemeToggle } from "./ThemeToggle";
 
 export type MobileMenuProps = HTMLAttributes<HTMLDivElement>;
@@ -9,21 +10,28 @@ export type MobileMenuProps = HTMLAttributes<HTMLDivElement>;
 const MENU_ID = "mobile-nav-menu";
 
 const mobileLinkStyles = cn(
-  "flex items-center gap-2 rounded-sm px-3 py-2 font-body text-sm font-medium text-text-secondary",
-  "transition duration-200 ease-in-out hover:bg-surface hover:text-text-primary",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+  "flex items-center gap-2 rounded-md px-3 py-2 font-body text-sm font-medium text-text-secondary",
+  "transition duration-200 ease-in-out",
+  "hover:bg-surface hover:text-text-primary",
+  "focus-visible:outline-none",
+  "focus-visible:ring-2",
+  "focus-visible:ring-primary",
+  "focus-visible:ring-offset-2"
 );
 
-/**
- * Hamburger trigger + slide-down panel for small screens. Shares
- * `NAV_LINKS` with `Navigation` so desktop and mobile never fall out of
- * sync, and keeps its own open/closed state local to this component.
- */
-export function MobileMenu({ className, ...props }: MobileMenuProps) {
+export function MobileMenu({
+  className,
+  ...props
+}: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <div className={cn("relative", className)} {...props}>
+    <div
+      className={cn("relative", className)}
+      {...props}
+    >
       <button
         type="button"
         aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -32,8 +40,12 @@ export function MobileMenu({ className, ...props }: MobileMenuProps) {
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
           "inline-flex h-9 w-9 items-center justify-center rounded-md text-text-primary",
-          "transition duration-200 ease-in-out hover:bg-surface",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          "transition duration-200 ease-in-out",
+          "hover:bg-surface",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2",
+          "focus-visible:ring-primary",
+          "focus-visible:ring-offset-2"
         )}
       >
         <svg
@@ -47,46 +59,67 @@ export function MobileMenu({ className, ...props }: MobileMenuProps) {
           className="h-5 w-5"
           aria-hidden="true"
         >
-          {isOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          {isOpen ? (
+            <path d="M18 6 6 18M6 6l12 12" />
+          ) : (
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          )}
         </svg>
       </button>
 
       <div
         id={MENU_ID}
         className={cn(
-          "absolute right-0 top-full mt-2 w-56 origin-top-right overflow-hidden rounded-md border border-border bg-background shadow-sm",
+          "absolute right-0 top-full mt-2 w-56 origin-top-right overflow-hidden rounded-xl border border-border bg-background shadow-lg",
           "transition-all duration-200 ease-in-out",
-          isOpen ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0 border-transparent"
+          isOpen
+            ? "max-h-96 opacity-100"
+            : "pointer-events-none max-h-0 opacity-0 border-transparent"
         )}
       >
-        <nav aria-label="Mobile" className="flex flex-col p-2">
+        <nav
+          aria-label="Mobile"
+          className="flex flex-col p-2"
+        >
           <ul className="flex flex-col">
+
             <li>
-              <a
-                href="#"
-                aria-current="page"
-                onClick={() => setIsOpen(false)}
+              <Link
+                to="/"
+                onClick={closeMenu}
                 className={mobileLinkStyles}
               >
-                <HomeIcon className="h-4 w-4" aria-hidden="true" />
+                <HomeIcon
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
                 Home
-              </a>
+              </Link>
             </li>
+
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
+                <Link
+                  to={link.href}
+                  onClick={closeMenu}
                   className={mobileLinkStyles}
                 >
-                  <link.icon className="h-4 w-4" aria-hidden="true" />
+                  <link.icon
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  />
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
+
           </ul>
-          <div className="mt-1 flex items-center justify-between border-t border-border px-3 pt-2">
-            <span className="font-body text-sm text-text-secondary">Theme</span>
+
+          <div className="mt-2 flex items-center justify-between border-t border-border px-3 pt-3">
+            <span className="font-body text-sm text-text-secondary">
+              Theme
+            </span>
+
             <ThemeToggle />
           </div>
         </nav>
