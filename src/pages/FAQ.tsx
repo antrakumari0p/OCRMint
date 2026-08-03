@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
+import { SEO } from "@/components/seo/SEO";
 
 const FAQS = [
   {
@@ -80,7 +81,7 @@ function FAQItem({
   onClick={() => setOpen(!open)}
 >
       <div className="flex items-center justify-between gap-6">
-        <h3 className="font-heading text-lg font-semibold leading-7 text-text-primarygroup-hover:text-primary transition-colors">
+        <h3 className="font-heading text-lg font-semibold leading-7 text-text-primary group-hover:text-primary transition-colors">
           {question}
         </h3>
 
@@ -107,10 +108,16 @@ function FAQItem({
     </Card>
   );
 }
-export function FAQ() {
+export function FAQ(): import("react").JSX.Element {
   const navigate = useNavigate();
 
   return (
+    <>
+    <SEO
+title="OCR FAQ | OCRMint"
+description="Frequently asked questions about OCRMint, browser OCR, supported image formats and privacy."
+canonical="/faq"
+/>
     <main>
       {/* Hero */}
 
@@ -169,5 +176,6 @@ export function FAQ() {
         </Container>
       </Section>
     </main>
+   </>
   );
 }

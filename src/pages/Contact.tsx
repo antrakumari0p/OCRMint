@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
+import { SEO } from "@/components/seo/SEO";
 
 const CONTACT_OPTIONS = [
   {
@@ -20,6 +21,12 @@ export function Contact() {
   const navigate = useNavigate();
 
   return (
+     <>
+    <SEO
+title="Contact OCRMint | Mint Labs"
+description="Contact OCRMint for feedback, bug reports, feature requests or business enquiries."
+canonical="/contact"
+/>
     <main>
       {/* Hero */}
       <Section as="section" aria-label="Contact OCRMint" className="py-12 sm:py-16">
@@ -143,5 +150,6 @@ export function Contact() {
         </Container>
       </Section>
     </main>
+    </>
   );
 }

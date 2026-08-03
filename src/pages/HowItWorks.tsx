@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
-
+import { SEO } from "@/components/seo/SEO";
 const STEPS = [
   {
     number: "01",
@@ -102,6 +102,12 @@ export function HowItWorks() {
   const navigate = useNavigate();
 
   return (
+<>
+    <SEO
+title="How OCR Works | OCRMint"
+description="Learn how OCRMint converts images into editable text using browser-based OCR technology."
+canonical="/how-it-works"
+/>
     <main>
 
       {/* Hero */}
@@ -317,5 +323,6 @@ export function HowItWorks() {
       </Section>
 
     </main>
+     </>
   );
 }

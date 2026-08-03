@@ -2,6 +2,7 @@ import { Hero } from "@/sections/Hero";
 import { OcrWorkspace } from "@/sections/OcrWorkspace";
 import { useOcr } from "@/hooks/useOcr";
 import { useClipboardImage } from "@/hooks/useClipboardImage";
+import { SEO } from "@/components/seo/SEO";
 
 /**
  * Home page.
@@ -29,6 +30,7 @@ import { useClipboardImage } from "@/hooks/useClipboardImage";
  * config changes were needed for the transition.
  */
 export function Home() {
+ 
   const ocr = useOcr();
   const clipboard = useClipboardImage({
     onImage: ocr.extractText,
@@ -39,6 +41,12 @@ export function Home() {
   const showWorkspace = Boolean(ocr.image) || Boolean(ocr.error);
 
   return (
+     <>
+  <SEO
+    title="Free Image to Text OCR Online | OCRMint "
+    description="Extract editable text from PNG, JPG, JPEG and WEBP images instantly. Free online OCR with privacy-first browser processing by Mint Labs."
+    canonical="/"
+  />
     <main>
       <style>{`
         @keyframes ocrmint-section-in {
@@ -75,5 +83,6 @@ export function Home() {
         </div>
       )}
     </main>
+   </>
   );
 }

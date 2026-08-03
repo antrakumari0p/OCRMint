@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
+import { SEO } from "@/components/seo/SEO";
 
 const COLLECTION = [
   {
@@ -46,6 +47,12 @@ export function Privacy() {
   const navigate = useNavigate();
 
   return (
+      <>
+    <SEO
+title="Privacy Policy | OCRMint"
+description="Read OCRMint's privacy policy and learn how we protect your images and data."
+canonical="/privacy"
+/>
     <main>
 
       {/* Hero */}
@@ -344,5 +351,6 @@ export function Privacy() {
       </Section>
 
     </main>
+</>
   );
 }

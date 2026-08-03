@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
+import { SEO } from "@/components/seo/SEO";
 
 const WHY_OCRMINT = [
   {
@@ -26,7 +27,13 @@ const WHY_OCRMINT = [
 export function About() {
   const navigate = useNavigate();
 
-  return (
+return (
+  <>
+    <SEO
+      title="About OCRMint | Mint Labs"
+      description="Learn about OCRMint, the privacy-first browser OCR tool developed by Mint Labs."
+      canonical="/about"
+    />
     <main>
       {/* Section 1 — Hero */}
       <Section as="section" aria-label="About OCRMint" className="py-12 sm:py-16">
@@ -90,6 +97,7 @@ export function About() {
           </Button>
         </Container>
       </Section>
-    </main>
-  );
+        </main>
+  </>
+);
 }

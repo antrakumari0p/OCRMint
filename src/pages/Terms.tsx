@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Section } from "@/components/ui";
+import { SEO } from "@/components/seo/SEO";
 
 const PRINCIPLES = [
   "Fair use",
@@ -32,6 +33,12 @@ export function Terms() {
   const navigate = useNavigate();
 
   return (
+     <>
+    <SEO
+title="Terms of Service | OCRMint"
+description="Read the Terms of Service governing your use of OCRMint."
+canonical="/terms"
+/>
     <main>
 
       {/* Hero */}
@@ -380,5 +387,6 @@ export function Terms() {
       </Section>
 
     </main>
+  </>
   );
 }
