@@ -14,3 +14,5 @@ export type { MintLabsBadgeProps } from "./MintLabsBadge";
 
 export { NAV_LINKS } from "./navLinks";
 export type { NavLink } from "./navLinks";
+
+export { Footer } from "./Footer";
